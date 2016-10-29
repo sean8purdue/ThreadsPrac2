@@ -29,9 +29,9 @@ int main( int argc, char ** argv )
 	printf("Start Test. Final count should be %d\n", 2 * n );
 
 	// Create threads
-	pthread_create( &t1, &attr, (void * (*)(void *)) increment, (void *) n);
+	pthread_create( &t1, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
-	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) n);
+	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
 	// Wait until threads are done
 	pthread_join( t1, NULL );
