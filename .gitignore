@@ -1,0 +1,11 @@
+# Executables
+count
+count_spin
+deadlock
+syscall
+thr1
+thr1s
+thr2
+
+# Debug files
+*.dSYM/
