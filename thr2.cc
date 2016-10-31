@@ -18,8 +18,8 @@ int main( int argc, char ** argv )
 	pthread_attr_init( &attr );
 	pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 
-	printC("C");
 	pthread_create( &t1, &attr, (void * (*)(void *)) printC, (void *) "A" );
 	pthread_create( &t2, &attr, (void * (*)(void *)) printC, (void *) "B" );
+	printC("C");
 
 }
