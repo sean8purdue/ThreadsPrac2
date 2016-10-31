@@ -93,6 +93,9 @@ Start Test. Final count should be 20000000
 ➜  lab4-src git:(part2_MutualExclusion)
 ~~~
 
+### 2.2 Fix above problem with MutexLock
+
+
 
 
 
