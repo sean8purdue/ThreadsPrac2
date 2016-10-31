@@ -95,6 +95,8 @@ Start Test. Final count should be 20000000
 
 ### 2.2 Fix above problem with MutexLock
 
+* Try 1 Local mutex lock
+
 If you add mutex lock in function `increment(int times)`, it will not work!!!
 
 ~~~cpp
@@ -113,6 +115,9 @@ void increment(int ntimes )
 	}
 }
 ~~~
+
+* Try 2 Global mutex lock
+
 
 
 

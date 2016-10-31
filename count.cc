@@ -7,16 +7,17 @@ int count;
 
 void increment(int ntimes )
 {
-	pthread_mutex_t mutex;
 	for ( int i = 0; i < ntimes; i++ ) {
+		pthread_mutex_t mutex;
+		pthread_mutex_init(&mutex, NULL);
+		pthread_mutex_lock(&mutex);
 		int c;
 
-	pthread_mutex_lock(&mutex);
 		c = count;
 		c = c + 1;
 
 		count = c;
-	pthread_mutex_unlock(&mutex);
+		pthread_mutex_unlock(&mutex);
 	}
 }
 
