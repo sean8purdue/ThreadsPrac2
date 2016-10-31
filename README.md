@@ -95,6 +95,25 @@ Start Test. Final count should be 20000000
 
 ### 2.2 Fix above problem with MutexLock
 
+If you add mutex lock in function `increment(int times)`, it will not work!!!
+
+~~~cpp
+void increment(int ntimes )
+{
+	pthread_mutex_t mutex;
+	for ( int i = 0; i < ntimes; i++ ) {
+		int c;
+
+	pthread_mutex_lock(&mutex);
+		c = count;
+		c = c + 1;
+
+		count = c;
+	pthread_mutex_unlock(&mutex);
+	}
+}
+~~~
+
 
 
 
