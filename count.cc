@@ -7,6 +7,20 @@ int count;
 pthread_mutex_t mutex;
 pthread_mutexattr_t mattr;
 
+void increment(int ntimes )
+{
+		pthread_mutex_lock( &mutex );
+	for ( int i = 0; i < ntimes; i++ ) {
+		int c;
+
+		c = count;
+		c = c + 1;
+
+		count = c;
+	}
+		pthread_mutex_unlock( &mutex );
+}
+
 
 int main( int argc, char ** argv )
 {
@@ -38,19 +52,4 @@ int main( int argc, char ** argv )
 	else {
 		printf("\n>>>>>> O.K. Final count is %d\n", count );
 	}
-}
-
-
-void increment(int ntimes )
-{
-		pthread_mutex_lock( &mutex );
-	for ( int i = 0; i < ntimes; i++ ) {
-		int c;
-
-		c = count;
-		c = c + 1;
-
-		count = c;
-	}
-		pthread_mutex_unlock( &mutex );
 }
