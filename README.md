@@ -68,7 +68,73 @@ Correct Code shoud be
 
 ## Part2
 
-### 2.1
+### 2.1 Examine the `count.cc` file 
+
+Run count several times, the count is incorrect. Since **count** is a global variable, each thread can access and modify it at the same time
+
+The context switch from one thread to another may change the sequence of events, so the counter may lose some of the counts.
+
+~~~
+➜  lab4-src git:(part2_MutualExclusion) ./count
+Start Test. Final count should be 20000000
+
+****** Error. Final count is 9898598
+****** It should be 20000000
+➜  lab4-src git:(part2_MutualExclusion) ./count
+Start Test. Final count should be 20000000
+
+****** Error. Final count is 10151130
+****** It should be 20000000
+➜  lab4-src git:(part2_MutualExclusion) ./count
+Start Test. Final count should be 20000000
+
+****** Error. Final count is 10911438
+****** It should be 20000000
+➜  lab4-src git:(part2_MutualExclusion)
+~~~
+
+### 2.2 Fix above problem with MutexLock
+
+* Try 1 Local mutex lock
+
+If you add mutex lock in function `increment(int times)`, it will not work!!!
+
+~~~cpp
+void increment(int ntimes )
+{
+	pthread_mutex_t mutex;
+	for ( int i = 0; i < ntimes; i++ ) {
+		int c;
+
+	pthread_mutex_lock(&mutex);
+		c = count;
+		c = c + 1;
+
+		count = c;
+	pthread_mutex_unlock(&mutex);
+	}
+}
+~~~
+
+* Try 2 Global mutex lock
+
+Correct Version
+
+~~~cpp
+void increment(int ntimes )
+{
+		pthread_mutex_lock( &mutex );
+	   for ( int i = 0; i < ntimes; i++ ) {
+			int c;
+
+			c = count;
+			c = c + 1;
+
+			count = c;
+		}
+		pthread_mutex_unlock( &mutex );
+}
+~~~
 
 
 
