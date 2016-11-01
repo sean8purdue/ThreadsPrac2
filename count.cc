@@ -6,21 +6,7 @@
 int count;
 pthread_mutex_t mutex;
 pthread_mutexattr_t mattr;
-//int pthread_mutex_init(&mutex, NULL);
 
-void increment(int ntimes )
-{
-		pthread_mutex_lock( &mutex );
-	for ( int i = 0; i < ntimes; i++ ) {
-		int c;
-
-		c = count;
-		c = c + 1;
-
-		count = c;
-	}
-		pthread_mutex_unlock( &mutex );
-}
 
 int main( int argc, char ** argv )
 {
@@ -55,3 +41,16 @@ int main( int argc, char ** argv )
 }
 
 
+void increment(int ntimes )
+{
+		pthread_mutex_lock( &mutex );
+	for ( int i = 0; i < ntimes; i++ ) {
+		int c;
+
+		c = count;
+		c = c + 1;
+
+		count = c;
+	}
+		pthread_mutex_unlock( &mutex );
+}
