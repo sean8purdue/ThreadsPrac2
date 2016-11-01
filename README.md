@@ -136,7 +136,61 @@ void increment(int ntimes )
 }
 ~~~
 
+* Try 3 Bugs Analysis
+
+3.1 Bug 3.1
+
+It's confused why this mutex lock doesn't work?
+
+~~~cpp
+void increment(int ntimes )
+{
+	   for ( int i = 0; i < ntimes; i++ ) {
+			int c;
+
+		pthread_mutex_lock( &mutex );
+			c = count;
+			c = c + 1;
+
+			count = c;
+		pthread_mutex_unlock( &mutex );
+		}
+}
+~~~
 
 
+3.2 Bug 3.2
 
+This mutex lock also doesn't work?
 
+~~~cpp
+void increment(int ntimes )
+{
+		pthread_mutex_lock( &mutex );
+	   for ( int i = 0; i < ntimes; i++ ) {
+			int c;
+
+			c = count;
+			c = c + 1;
+
+			count = c;
+		pthread_mutex_unlock( &mutex );
+		}
+}
+~~~
+
+~~~cpp
+void increment(int ntimes )
+{
+	   for ( int i = 0; i < ntimes; i++ ) {
+			int c;
+		pthread_mutex_lock( &mutex );
+
+			c = count;
+			c = c + 1;
+
+			count = c;
+		}
+		pthread_mutex_unlock( &mutex );
+}
+~~~
