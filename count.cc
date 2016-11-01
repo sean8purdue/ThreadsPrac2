@@ -4,21 +4,22 @@
 #include <unistd.h>
 
 int count;
+pthread_mutex_t mutex;
+pthread_mutexattr_t mattr;
+//int pthread_mutex_init(&mutex, NULL);
 
 void increment(int ntimes )
 {
+		pthread_mutex_lock( &mutex );
 	for ( int i = 0; i < ntimes; i++ ) {
-		pthread_mutex_t mutex;
-		pthread_mutex_init(&mutex, NULL);
-		pthread_mutex_lock(&mutex);
 		int c;
 
 		c = count;
 		c = c + 1;
 
 		count = c;
-		pthread_mutex_unlock(&mutex);
 	}
+		pthread_mutex_unlock( &mutex );
 }
 
 int main( int argc, char ** argv )
@@ -26,6 +27,9 @@ int main( int argc, char ** argv )
 	int n = 10000000;
 	pthread_t t1, t2;
         pthread_attr_t attr;
+
+	pthread_mutexattr_init( &mattr );
+	pthread_mutex_init( &mutex, &mattr);
 
         pthread_attr_init( &attr );
         pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
