@@ -2,6 +2,10 @@
 *.swp
 # Executables
 count
+bcount
+dcount
+mcount
+mainEnd_count
 count_spin
 deadlock
 syscall
