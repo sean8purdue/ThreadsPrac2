@@ -43,10 +43,12 @@ int main( int argc, char ** argv )
 
 	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
-	pthread_mutex_unlock( &mutex );
 
 	// Wait until threads are done
 	pthread_join( t1, NULL );
+
+	pthread_mutex_unlock( &mutex );
+
 	pthread_join( t2, NULL );
 
 	if ( count != 2 * n ) {
