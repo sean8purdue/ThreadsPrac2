@@ -5,21 +5,18 @@
 
 volatile unsigned long lock = 0;
 
-unsigned long 
-test_and_set(volatile unsigned long * lock)
+unsigned long test_and_set(volatile unsigned long * lock)
 {
     unsigned long oldval = 1;
     asm volatile("xchgq %1,%0":"=r"(oldval):"m"(*lock),"0"(oldval):"memory");
     return oldval;
 }
 
-void
-my_spin_lock( volatile unsigned long * lock )
+void my_spin_lock( volatile unsigned long * lock )
 {
 }
 
-void
-my_spin_unlock( volatile unsigned long * lock )
+void my_spin_unlock( volatile unsigned long * lock )
 {
 }
 
@@ -49,11 +46,9 @@ int main( int argc, char ** argv )
 	printf("Start Test. Final count should be %d\n", 2 * n );
 
 	// Create threads
-	pthread_create( &t1, &attr, (void * (*)(void *)) increment, 
-			(void *) n);
+	pthread_create( &t1, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
-	pthread_create( &t2, &attr, (void * (*)(void *)) increment, 
-			(void *) n);
+	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
 	// Wait until threads are done
 	pthread_join( t1, NULL );
