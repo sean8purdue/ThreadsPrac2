@@ -3,6 +3,7 @@
 # Executables
 count
 bcount
+mcount
 count_spin
 deadlock
 syscall
