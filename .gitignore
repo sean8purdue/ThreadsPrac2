@@ -2,6 +2,7 @@
 *.swp
 # Executables
 count
+bcount
 count_spin
 deadlock
 syscall

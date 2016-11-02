@@ -1,5 +1,5 @@
 
-all: thr1 thr2 count count_spin deadlock
+all: thr1 thr2 count bcount count_spin deadlock
 
 thr1: thr1.cc
 	g++ -o thr1 thr1.cc -lpthread
@@ -10,6 +10,9 @@ thr2: thr2.cc
 count: count.cc
 	g++  -o count count.cc -lpthread
 
+bcount: count_bug.cc
+	g++  -o bcount count_bug.cc -lpthread
+
 count_spin: count_spin.cc
 	g++  -o count_spin count_spin.cc -lpthread
 
@@ -17,5 +20,4 @@ deadlock: deadlock.cc
 	g++  -o deadlock deadlock.cc -lpthread
 
 clean:
-	rm -f *.o thr1 thr2 count count_spin deadlock
-
+	rm -f *.o thr1 thr2 count count_spin deadlock bcount

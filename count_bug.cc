@@ -24,7 +24,7 @@ void increment(int ntimes )
 
 int main( int argc, char ** argv )
 {
-	int n = 10000000;
+	int n = 5;
 	pthread_t t1, t2;
         pthread_attr_t attr;
 
