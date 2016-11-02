@@ -1,12 +1,10 @@
+# Double or Multiple Unlock MutexLock
 
-#include <pthread.h>
-#include <stdio.h>
-#include <unistd.h>
+## 1. Double Unlock
 
-int count;
-pthread_mutex_t mutex;
-pthread_mutexattr_t mattr;
+code:
 
+~~~cpp
 void increment(int ntimes )
 {
 		pthread_mutex_lock( &mutex );
@@ -19,12 +17,13 @@ void increment(int ntimes )
 		count = c;
 	}
 		pthread_mutex_unlock( &mutex );
+		pthread_mutex_unlock( &mutex );
 }
-
 
 int main( int argc, char ** argv )
 {
-	int n = 10000000;
+	int n = 5;
+	//int n = 20000000;
 	pthread_t t1, t2;
         pthread_attr_t attr;
 
@@ -53,3 +52,32 @@ int main( int argc, char ** argv )
 		printf("\n>>>>>> O.K. Final count is %d\n", count );
 	}
 }
+~~~
+
+Unlock mutexLock twice, when `n = 5`, most times, the result will be OK, still 10.
+	But when `n = 100000000`, a lot of switch between threads happen, the result will not be correct, less than 200000000, like 123160000.
+
+
+
+## 2. Multiple Unlock
+	
+code:
+
+~~~cpp
+void increment(int ntimes )
+{
+		pthread_mutex_lock( &mutex );
+	for ( int i = 0; i < ntimes; i++ ) {
+		int c;
+
+		c = count;
+		c = c + 1;
+
+		count = c;
+		pthread_mutex_unlock( &mutex );
+	}
+		pthread_mutex_unlock( &mutex );
+		pthread_mutex_unlock( &mutex );
+~~~
+
+The above code unlock `ntimes+2` times;. even when `n = small numbers`, the result will be not correct.

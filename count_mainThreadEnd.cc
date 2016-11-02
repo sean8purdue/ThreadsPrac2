@@ -24,7 +24,7 @@ void increment(int ntimes )
 
 int main( int argc, char ** argv )
 {
-	int n = 10000000;
+	int n = 5;
 	pthread_t t1, t2;
         pthread_attr_t attr;
 
@@ -42,8 +42,8 @@ int main( int argc, char ** argv )
 	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
 	// Wait until threads are done
-	pthread_join( t1, NULL );
-	pthread_join( t2, NULL );
+	//pthread_join( t1, NULL );
+	//pthread_join( t2, NULL );
 
 	if ( count != 2 * n ) {
 		printf("\n****** Error. Final count is %d\n", count );

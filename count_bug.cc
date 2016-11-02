@@ -9,8 +9,8 @@ pthread_mutexattr_t mattr;
 
 void increment(int ntimes )
 {
-		pthread_mutex_lock( &mutex );
 	for ( int i = 0; i < ntimes; i++ ) {
+		pthread_mutex_lock( &mutex );
 		int c;
 
 		c = count;
@@ -24,7 +24,7 @@ void increment(int ntimes )
 
 int main( int argc, char ** argv )
 {
-	int n = 10000000;
+	int n = 5;
 	pthread_t t1, t2;
         pthread_attr_t attr;
 

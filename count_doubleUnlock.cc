@@ -17,14 +17,17 @@ void increment(int ntimes )
 		c = c + 1;
 
 		count = c;
+		pthread_mutex_unlock( &mutex );
 	}
+		pthread_mutex_unlock( &mutex );
 		pthread_mutex_unlock( &mutex );
 }
 
 
 int main( int argc, char ** argv )
 {
-	int n = 10000000;
+	int n = 5;
+	//int n = 20000000;
 	pthread_t t1, t2;
         pthread_attr_t attr;
 

@@ -24,12 +24,14 @@ void increment(int ntimes )
 
 int main( int argc, char ** argv )
 {
-	int n = 10000000;
+	int n = 100000000;
 	pthread_t t1, t2;
         pthread_attr_t attr;
 
 	pthread_mutexattr_init( &mattr );
 	pthread_mutex_init( &mutex, &mattr);
+
+	pthread_mutex_lock( &mutex );
 
         pthread_attr_init( &attr );
         pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
@@ -41,8 +43,12 @@ int main( int argc, char ** argv )
 
 	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
+
 	// Wait until threads are done
 	pthread_join( t1, NULL );
+
+	pthread_mutex_unlock( &mutex );
+
 	pthread_join( t2, NULL );
 
 	if ( count != 2 * n ) {
