@@ -1,5 +1,5 @@
 
-all: thr1 thr2 count bcount dcount mcount count_spin deadlock
+all: thr1 thr2 count bcount dcount mcount mainEnd_count count_spin deadlock
 
 thr1: thr1.cc
 	g++ -o thr1 thr1.cc -lpthread
@@ -18,6 +18,9 @@ mcount: count_masterLock.cc
 
 dcount: count_doubleUnlock.cc
 	g++ -g -o dcount count_doubleUnlock.cc -lpthread
+
+mainEnd_count: count_mainThreadEnd.cc
+	g++ -g -o mainEnd_count count_mainThreadEnd.cc -lpthread
 
 count_spin: count_spin.cc
 	g++  -o count_spin count_spin.cc -lpthread
