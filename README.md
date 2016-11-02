@@ -264,6 +264,38 @@ void increment(int ntimes )
 }
 ~~~
 
+<mark>**Bug Fix**:
+
+If lock mutexLock in the loop, when thread t1 run the second time in loop, it will try to lock the same mutexLock again, which will make the thread itself to `wait` state.
+
+<mark>Never put mutexLock in loop!!!
+
+~~~
+(gdb) r
+Starting program: /Users/Sean/Desktop/new/bcount
+Start Test. Final count should be 10
+[New Thread 0x1313 of process 11214]
+[New Thread 0x1403 of process 11214]
+
+Thread 1 hit Breakpoint 2, main (argc=1, argv=0x7fff5fbffa70) at count_bug.cc:45
+45     		pthread_join( t1, NULL );
+(gdb) n
+[Switching to Thread 0x1313 of process 11214]
+
+Thread 2 hit Breakpoint 1, increment (ntimes=5) at count_bug.cc:16
+16     			c = count;
+(gdb) n
+17     			c = c + 1;
+(gdb)
+19     			count = c;
+(gdb)
+12     		for ( int i = 0; i < ntimes; i++ ) {
+(gdb)
+➜  13     			pthread_mutex_lock( &mutex ); 
+(gdb)
+~~~
+
+The arrow line display that the running thread try to lock the same mutexLock again,
 
 3.2 Bug 3.2
 

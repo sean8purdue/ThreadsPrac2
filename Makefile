@@ -8,7 +8,7 @@ thr2: thr2.cc
 	g++ -o thr2 thr2.cc -lpthread
 
 count: count.cc
-	g++  -o count count.cc -lpthread
+	g++ -g -o count count.cc -lpthread
 
 bcount: count_bug.cc
 	g++ -g -o bcount count_bug.cc -lpthread
