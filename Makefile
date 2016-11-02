@@ -11,7 +11,7 @@ count: count.cc
 	g++  -o count count.cc -lpthread
 
 bcount: count_bug.cc
-	g++  -o bcount count_bug.cc -lpthread
+	g++ -g -o bcount count_bug.cc -lpthread
 
 count_spin: count_spin.cc
 	g++  -o count_spin count_spin.cc -lpthread
