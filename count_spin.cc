@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
+//#include <thread.h>
+
 volatile unsigned long lock = 0;
 
 unsigned long test_and_set(volatile unsigned long * lock)
@@ -14,10 +16,15 @@ unsigned long test_and_set(volatile unsigned long * lock)
 
 void my_spin_lock( volatile unsigned long * lock )
 {
+	while (test_and_set(lock) != 0) {
+		// Give up CPU
+		thr_yield();
+	}
 }
 
 void my_spin_unlock( volatile unsigned long * lock )
 {
+	*lock = 0;
 }
 
 int count;
