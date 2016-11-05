@@ -18,7 +18,15 @@ void my_spin_lock( volatile unsigned long * lock )
 {
 	while (test_and_set(lock) != 0) {
 		// Give up CPU
-		thr_yield();
+		//thr_yield();
+		// The below function works at CS data machine!
+		pthread_yield();
+
+		//➜  lab4-src time ./count_spin
+		//Start Test. Final count should be 20000000
+		//
+		//>>>>>> O.K. Final count is 20000000
+		//./count_spin  0.16s user 0.05s system 140% cpu 0.149 total
 	}
 }
 
