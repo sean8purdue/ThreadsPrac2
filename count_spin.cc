@@ -3,24 +3,36 @@
 #include <stdio.h>
 #include <unistd.h>
 
+//#include <thread.h>
+
 volatile unsigned long lock = 0;
 
-unsigned long 
-test_and_set(volatile unsigned long * lock)
+unsigned long test_and_set(volatile unsigned long * lock)
 {
     unsigned long oldval = 1;
     asm volatile("xchgq %1,%0":"=r"(oldval):"m"(*lock),"0"(oldval):"memory");
     return oldval;
 }
 
-void
-my_spin_lock( volatile unsigned long * lock )
+void my_spin_lock( volatile unsigned long * lock )
 {
+	while (test_and_set(lock) != 0) {
+		// Give up CPU
+		//thr_yield();
+		// The below function works at CS data machine!
+		pthread_yield();
+
+		//➜  lab4-src time ./count_spin
+		//Start Test. Final count should be 20000000
+		//
+		//>>>>>> O.K. Final count is 20000000
+		//./count_spin  0.16s user 0.05s system 140% cpu 0.149 total
+	}
 }
 
-void
-my_spin_unlock( volatile unsigned long * lock )
+void my_spin_unlock( volatile unsigned long * lock )
 {
+	*lock = 0;
 }
 
 int count;
@@ -49,11 +61,9 @@ int main( int argc, char ** argv )
 	printf("Start Test. Final count should be %d\n", 2 * n );
 
 	// Create threads
-	pthread_create( &t1, &attr, (void * (*)(void *)) increment, 
-			(void *) n);
+	pthread_create( &t1, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
-	pthread_create( &t2, &attr, (void * (*)(void *)) increment, 
-			(void *) n);
+	pthread_create( &t2, &attr, (void * (*)(void *)) increment, (void *) (size_t) n);
 
 	// Wait until threads are done
 	pthread_join( t1, NULL );
