@@ -333,4 +333,30 @@ void increment(int ntimes )
 }
 ~~~
 
+## Part4
 
+### Problem Analysis
+
+Deadlock in the following mark.
+
+~~~c
+void transfer1to2(int amount)
+{
+        pthread_mutex_lock(&m1);
+        pthread_mutex_lock(&m2);
+        balance1 -= amount;
+        balance2 += amount;
+        pthread_mutex_unlock(&m1);
+        pthread_mutex_unlock(&m2);
+}
+
+void transfer2to1( int amount )
+{
+➜       pthread_mutex_lock(&m2);
+        pthread_mutex_lock(&m1);
+        balance2 -= amount;
+        balance1 += amount;
+        pthread_mutex_unlock(&m2);
+        pthread_mutex_unlock(&m1);
+}
+~~~
