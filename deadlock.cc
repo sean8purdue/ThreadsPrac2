@@ -20,8 +20,8 @@ void transfer1to2(int amount)
 
 void transfer2to1( int amount )
 {
-	pthread_mutex_lock(&m2);
 	pthread_mutex_lock(&m1);
+	pthread_mutex_lock(&m2);
 	balance2 -= amount;
 	balance1 += amount;
 	pthread_mutex_unlock(&m2);
