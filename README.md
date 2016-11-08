@@ -345,7 +345,9 @@ T2 run S7, and lock M2, when T2 run S8, since M1 has been locked by T1, so T2 tr
 
 Then T1 execute S2, since M2 has been locked by T2, so T1 transfer to wait state (block), and try to switch back to T2. But T2 is already in wait state (blocked). T1, T2 wait for each other, will never continue, blocked at S2, S8 respectively.
 
-As a result, T1, T2 are both blocked (in wait state). When Main thread run to S13, main thread will wait until T1 end, but T1 will never end, since it is in deadlock.
+➜ Speculation about main thread
+
+As a result, T1, T2 are both blocked (in wait state). When Main <mark>thread run to S13</mark>, main thread will wait until T1 end, but T1 will never end, since it is in deadlock.
 
 ~~~c
 void transfer1to2(int amount)
@@ -403,4 +405,16 @@ void transfer2to1( int amount )
 }
 ~~~
 
+### 3. Try Comment join() in main()
+
+If you comment join() in main(), the main thread will run through, and the program will exit. Which prove the speculation in the above analysis is correct.
+
+~~~
+➜  lab4-src git:(part4_deadlock) ✗ ./deadlock
+
+>>>>>> O.K. Final total is 200000000
+transfer1to2 0 times
+transfer2to1 0 times
+➜  lab4-src git:(part4_deadlock) ✗
+~~~
 

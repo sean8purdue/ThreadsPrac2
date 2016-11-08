@@ -63,8 +63,8 @@ int main( int argc, char ** argv )
 			(void *) 10000000);
 
 	// Wait until threads are done
-	pthread_join( t1, NULL );
-	pthread_join( t2, NULL );
+	//pthread_join( t1, NULL );
+	//pthread_join( t2, NULL );
 
 	if ( balance1 + balance2 !=  200000000) {
 		printf("\n****** Error. Final total is %d\n", balance1 + balance2 );
