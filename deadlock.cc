@@ -24,8 +24,8 @@ void transfer2to1( int amount )
 	pthread_mutex_lock(&m2);
 	balance2 -= amount;
 	balance1 += amount;
-	pthread_mutex_unlock(&m2);
 	pthread_mutex_unlock(&m1);
+	pthread_mutex_unlock(&m2);
 }
 
 void thr1(int number) {

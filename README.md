@@ -335,9 +335,51 @@ void increment(int ntimes )
 
 ## Part4
 
-### Problem Analysis
+### 1. Problem Analysis
 
 Deadlock in the following mark.
+
+When thread 1 (T1) execute statement 1 (S1). MutexLock (M1) lock. If this time there is a context switch, thread 2 (T2) begin to execute. 
+
+T2 run S7, and lock M2, when T2 run S8, since M1 has been locked by T1, so T2 transfer to wait state (block), and OS context swich back to T1.
+
+Then T1 execute S2, since M2 has been locked by T2, so T1 transfer to wait state (block), and try to switch back to T2. But T2 is already in wait state (blocked). T1, T2 wait for each other, will never continue, blocked at S2, S8 respectively.
+
+As a result, T1, T2 are both blocked (in wait state). When Main thread run to S13, main thread will wait until T1 end, but T1 will never end, since it is in deadlock.
+
+~~~c
+void transfer1to2(int amount)
+{
+1        pthread_mutex_lock(&m1);
+2        pthread_mutex_lock(&m2);
+3        balance1 -= amount;
+4        balance2 += amount;
+5        pthread_mutex_unlock(&m1);
+6        pthread_mutex_unlock(&m2);
+}
+
+void transfer2to1( int amount )
+{
+➜7       pthread_mutex_lock(&m2);
+ 8       pthread_mutex_lock(&m1);
+ 9       balance2 -= amount;
+ 10       balance1 += amount;
+ 11       pthread_mutex_unlock(&m2);
+ 12       pthread_mutex_unlock(&m1);
+}
+~~~
+
+~~~c
+		// In main()
+     // Wait until threads are done
+13     pthread_join( t1, NULL );
+14     pthread_join( t2, NULL );
+
+~~~
+
+### 2. Try different unlock order
+
+Unlock Order doesn't matter, doesn't make any difference to deadlock.
 
 ~~~c
 void transfer1to2(int amount)
@@ -352,11 +394,13 @@ void transfer1to2(int amount)
 
 void transfer2to1( int amount )
 {
-➜       pthread_mutex_lock(&m2);
-        pthread_mutex_lock(&m1);
+➜       pthread_mutex_lock(&m1);
+        pthread_mutex_lock(&m2);
         balance2 -= amount;
         balance1 += amount;
-        pthread_mutex_unlock(&m2);
         pthread_mutex_unlock(&m1);
+➜       pthread_mutex_unlock(&m2);
 }
 ~~~
+
+
