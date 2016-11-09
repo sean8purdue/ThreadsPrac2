@@ -232,6 +232,10 @@ increment (ntimes=5) at count_bug.cc:13
 
 It's confused why this mutex lock doesn't work?
 
+Update 1109_16
+
+This mutexLock works!! The former analysis is wrong. 
+
 ~~~cpp
 void increment(int ntimes )
 {
@@ -250,15 +254,15 @@ void increment(int ntimes )
 ~~~cpp
 void increment(int ntimes )
 {
-	   for ( int i = 0; i < ntimes; i++ ) {
-	   	    pthread_mutex_lock( &mutex );
-			int c;
+1	   for ( int i = 0; i < ntimes; i++ ) {
+2	   	    pthread_mutex_lock( &mutex );
+3			int c;
 		
-			c = count;
-			c = c + 1;
+4			c = count;
+5			c = c + 1;
 
-			count = c;
-			pthread_mutex_unlock( &mutex );
+6			count = c;
+7			pthread_mutex_unlock( &mutex );
 		}
 		
 }
@@ -269,6 +273,19 @@ void increment(int ntimes )
 If lock mutexLock in the loop, when thread t1 run the second time in loop, it will try to lock the same mutexLock again, which will make the thread itself to `wait` state.
 
 <mark>Never put mutexLock in loop!!!
+
+
+<mark>**Update 1109_16**
+
+This mutexLock works!! The former analysis is wrong. 
+
+If lock mutexLock in the loop, when thread t1 run the second time in loop, it will have to first unlock the mutexlock, and then run to next loop, it can't lock the same mutexLock again. That is when T1 run the second time, it has to continue execute from its leaving place, it can't run from the beginning of the loop. 
+
+Like if T1 runs to 2, then context swich to T2, T2 runs to 2, the mutexlock was locked by T1, so T2 switch back to T1. At this time, **T1 runs from 3 instead of 1!!!!!!**. Then T1 runs to 7 and unlock the mutexlock. Then, T1 runs 1, 2, 3...continue
+
+The **Problem** of this setup is, every loop T1 and T2 have to mutexlock and unlock. Which will make the program runs slowly. Maybe two many context switch happens.
+
+If we put the mutexlock outside the loop, it will only lock and unlock 1 time. T1 lock, and run through the loop for 10000 times, unlock and T1 done(dead). then T2 lock and run the loop for 10000 times, unlock and T2 dead.
 
 ~~~
 (gdb) r
